@@ -1,0 +1,100 @@
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu {
+  padding: 24px;
+}
+
+.menu-header {
+  flex: 1;
+  margin: 0;
+}
+
+.settings {
+  display: none;
+  position: absolute;
+  top: 30px;
+  right: 70px;
+  padding: 12px;
+  z-index: 1;
+  width: 400px;
+}
+
+.setting {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.setting:last-child {
+  margin-bottom: 0;
+}
+
+.position-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.setting-title {
+  margin-bottom: 8px;
+}
+
+.setting-title:last-child {
+  margin-bottom: 0;
+}
+
+#main {
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+#template {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+#name {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-family: Arial;
+}
+
+.name {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-family: Arial;
+}
+
+#viewport {
+  display: none;
+}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Hello World!</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet"
+    href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/11.0.0/css/fabric.min.css" />
+  <script type="module" src="https://unpkg.com/@fluentui/web-components"></script>
+</head>
+
+<body>
+  <fluent-design-system-provider accent-base-color="#750b1c" neutral-base-color="#750b1c" id="main">
+    <div class="menu center">
+      <h1 class="menu-header">Gerador de Certificados</h1>
+      <fluent-button id="settings-button">
+        <div class="center">
+          <i class="ms-Icon ms-Icon--Settings" aria-hidden="true"></i>
+        </div>
+      </fluent-button>
+      <fluent-listbox id="settings" class="settings">
+        <fluent-accordion id="settings-accordion"></fluent-accordion>
+        <div class="setting">
+          <span>Adicionar Nova Fonte</span>
+          <fluent-text-field id="font-input"></fluent-text-field>
+          <fluent-button id="add-font">Adicionar</fluent-button>
+        </div>
+        <div class="setting">
+          <fluent-button id="add-button">
+            <div class="center">
+              <i class="ms-Icon ms-Icon--Add" aria-hidden="true"></i>
+            </div>
+          </fluent-button>
+        </div>
+        <div class="setting">
+          <fluent-button id="export">Exportar</fluent-button>
+        </div>
+      </fluent-listbox>
+      <div id="excel-file"></div>
+    </div>
+    <div id="container">
+      <canvas id="viewport"></canvas>
+    </div>
+  </fluent-design-system-provider>
+  <script src="./textConfig.js"></script>
+  <script src="./configPanel.js"></script>
+  <script src="./index.js"></script>
+</body>
+
+</html>
