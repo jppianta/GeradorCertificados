@@ -1,8 +1,8 @@
 {
-  "name": "certificados",
-  "productName": "certificados",
+  "name": "tobo",
+  "productName": "Tobo",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Automatiza criação de documentos com textos associados a planilhas",
   "main": "main.js",
   "scripts": {
     "start": "electron-forge start",
@@ -13,7 +13,7 @@
   },
   "keywords": [],
   "author": {
-    "name": "jppianta",
+    "name": "Joao Pedro Pianta",
     "email": "joaopedro.pianta@gmail.com"
   },
   "license": "MIT",
@@ -24,21 +24,12 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "certificados"
+            "exe": "Tobo.exe",
+            "iconUrl": "https://raw.githubusercontent.com/jppianta/GeradorCertificados/main/icons/Tobo.ico"
           }
         },
         {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
+          "name": "@electron-forge/maker-pkg",
           "config": {}
         }
       ]
@@ -51,9 +42,8 @@
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.61",
     "@electron-forge/maker-deb": "^6.0.0-beta.61",
-    "@electron-forge/maker-rpm": "^6.0.0-beta.61",
+    "@electron-forge/maker-pkg": "^6.0.0-beta.61",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.61",
-    "@electron-forge/maker-zip": "^6.0.0-beta.61",
     "electron": "14.0.1"
   }
 }
