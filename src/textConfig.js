@@ -4,7 +4,13 @@ window.TextConfig = class TextConfig {
     this.textElement = null;
     this.headingElement = null;
     this.selectorElement = null;
+    this.textAlignElements = {
+      left: null,
+      center: null,
+      right: null
+    }
     this.text = 'Nome Exemplo';
+    this.textAlign = 'left';
     this.fontSize = 24;
     this.configCollapsed = false;
     this.topPos = 0;
@@ -29,14 +35,15 @@ window.TextConfig = class TextConfig {
       console.error('Missing Divs')
       return;
     }
-    this.setNameElement();
+    this.setTextElement();
 
     const settingsGroup = this.createAccordionItem();
 
     settingsGroup.appendChild(this.createTextInputElement());
     settingsGroup.appendChild(this.createFontSizeElement());
-    settingsGroup.appendChild(this.createFontPositionElement());
+    settingsGroup.appendChild(this.createTextAlignmentElement());
     settingsGroup.appendChild(this.createFontFamilySelector());
+    settingsGroup.appendChild(this.createFontPositionElement());
 
     settingsDiv.appendChild(settingsGroup);
   }
@@ -81,13 +88,17 @@ window.TextConfig = class TextConfig {
     return attr;
   }
 
-  setNameElement() {
-    const nameElement = document.createElement('span');
+  setTextElement() {
+    const nameElement = document.createElement('div');
     nameElement.className = 'name';
     nameElement.innerHTML = this.text;
 
     this.imageElement.appendChild(nameElement);
     this.textElement = nameElement;
+  }
+
+  parseText(text) {
+    this.text = text.replaceAll('\\n', '<br />')
   }
 
   createTextInputElement() {
@@ -97,7 +108,7 @@ window.TextConfig = class TextConfig {
     textInput.attributes.setNamedItem(this.createAttribute('placeholder', this.text))
 
     textInput.oninput = () => {
-      this.text = textInput.value;
+      this.parseText(textInput.value);
 
       if (this.textElement) {
         this.textElement.innerHTML = this.text;
@@ -134,15 +145,102 @@ window.TextConfig = class TextConfig {
     return settingDiv;
   }
 
+  createTextAlignmentElement() {
+    const settingDiv = this.createSettingDiv('Alinhamento do Texto');
+
+    const createButton = (icon, align) => {
+      const iconEle = document.createElement('i');
+      iconEle.className = `ms-Icon ms-Icon--${icon}`
+
+      const iconContainer = document.createElement('div');
+      iconContainer.className = 'center';
+      iconContainer.appendChild(iconEle)
+
+      const button = document.createElement('fluent-button');
+      button.onclick = () => {
+        this.textAlign = align
+        this.updateLeftPosition(0);
+
+        this.textAlignElements.left.classList.remove('selected-button')
+        this.textAlignElements.center.classList.remove('selected-button')
+        this.textAlignElements.right.classList.remove('selected-button')
+
+        button.classList.add('selected-button');
+      };
+      button.appendChild(iconContainer);
+
+      return button;
+    }
+
+    const posDiv = document.createElement('div');
+    posDiv.className = 'position-group';
+
+    const leftAlignButton = createButton('AlignLeft', 'left');
+    this.textAlignElements.left = leftAlignButton;
+    leftAlignButton.classList.add('selected-button')
+    posDiv.appendChild(leftAlignButton);
+
+    const centerAlignButton = createButton('AlignCenter', 'center');
+    this.textAlignElements.center = centerAlignButton;
+    posDiv.appendChild(centerAlignButton);
+
+    const rightAlignButton = createButton('AlignRight', 'right');
+    this.textAlignElements.right = rightAlignButton;
+    posDiv.appendChild(rightAlignButton);
+
+    settingDiv.appendChild(posDiv);
+
+    return settingDiv;
+  }
+
+  updateTopPosition = (diff) => {
+    this.topPos += diff;
+    if (this.textElement) {
+      this.textElement.style.top = `${this.topPos}px`;
+    }
+  }
+
+  updateLeftPosition = (diff) => {
+    this.leftPos += diff;
+    if (this.textElement) {
+      const { width } = this.textElement.getBoundingClientRect();
+      let leftPos = this.leftPos;
+      switch (this.textAlign) {
+        case 'center': {
+          leftPos -= width / 2;
+          break;
+        }
+        case 'right': {
+          leftPos -= width;
+          break;
+        }
+      }
+      this.textElement.style.left = `${leftPos}px`;
+    }
+  }
+
+  createButtonPressAndHold(button, speed, callback) {
+    let time;
+    let start = 500;
+
+    const repeat = () => {
+      callback();
+      time = setTimeout(repeat, start);
+      start = start / speed;
+    }
+
+    button.onmousedown = () => {
+      repeat();
+    }
+
+    button.onmouseup = () => {
+      clearTimeout(time);
+      start = 500;
+    }
+  }
+
   createFontPositionElement() {
     const settingDiv = this.createSettingDiv('Posição Fonte');
-
-    const updateTopPosition = (diff) => {
-      this.topPos += diff;
-      if (this.textElement) {
-        this.textElement.style.top = `${50 + this.topPos}%`;
-      }
-    }
 
     const topIcon = document.createElement('i');
     topIcon.className = 'ms-Icon ms-Icon--ChevronUp'
@@ -152,7 +250,7 @@ window.TextConfig = class TextConfig {
     topIconContainer.appendChild(topIcon)
 
     const topButton = document.createElement('fluent-button');
-    topButton.onclick = () => updateTopPosition(-1);
+    this.createButtonPressAndHold(topButton, 50, () => this.updateTopPosition(-1));
     topButton.appendChild(topIconContainer);
 
     const botIcon = document.createElement('i');
@@ -163,15 +261,8 @@ window.TextConfig = class TextConfig {
     botIconContainer.appendChild(botIcon)
 
     const botButton = document.createElement('fluent-button');
-    botButton.onclick = () => updateTopPosition(1);
+    this.createButtonPressAndHold(botButton, 50, () => this.updateTopPosition(1));
     botButton.appendChild(botIconContainer);
-
-    const updateLeftPosition = (diff) => {
-      this.leftPos += diff;
-      if (this.textElement) {
-        this.textElement.style.left = `${50 + this.leftPos}%`;
-      }
-    }
 
     const leftIcon = document.createElement('i');
     leftIcon.className = 'ms-Icon ms-Icon--ChevronLeft'
@@ -181,7 +272,7 @@ window.TextConfig = class TextConfig {
     leftIconContainer.appendChild(leftIcon)
 
     const leftButton = document.createElement('fluent-button');
-    leftButton.onclick = () => updateLeftPosition(-1);
+    this.createButtonPressAndHold(leftButton, 50, () => this.updateLeftPosition(-1));
     leftButton.appendChild(leftIconContainer);
 
     const rightIcon = document.createElement('i');
@@ -192,7 +283,7 @@ window.TextConfig = class TextConfig {
     rightIconContainer.appendChild(rightIcon)
 
     const rightButton = document.createElement('fluent-button');
-    rightButton.onclick = () => updateLeftPosition(1);
+    this.createButtonPressAndHold(rightButton, 50, () => this.updateLeftPosition(1));
     rightButton.appendChild(rightIconContainer);
 
     const posDiv = document.createElement('div');
@@ -261,5 +352,9 @@ window.TextConfig = class TextConfig {
     settingDiv.appendChild(this.selectorElement);
 
     return settingDiv;
+  }
+
+  getText() {
+    return this.text;
   }
 }

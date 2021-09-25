@@ -20,11 +20,14 @@
         </div>
       </fluent-button>
       <fluent-listbox id="settings" class="settings">
-        <fluent-accordion id="settings-accordion"></fluent-accordion>
         <div class="setting">
           <span>Adicionar Nova Fonte</span>
           <fluent-text-field id="font-input"></fluent-text-field>
           <fluent-button id="add-font">Adicionar</fluent-button>
+        </div>
+        <div class="setting">
+          <span>Textos</span>
+          <fluent-accordion id="settings-accordion"></fluent-accordion>
         </div>
         <div class="setting">
           <fluent-button id="add-button">
@@ -34,10 +37,16 @@
           </fluent-button>
         </div>
         <div class="setting">
+          <span>Planilha</span>
+          <fluent-accordion id="sheet-accordion"></fluent-accordion>
+        </div>
+        <div class="setting">
           <fluent-button id="export">Exportar</fluent-button>
         </div>
+        <div class="setting">
+          <div id="excel-file"></div>
+        </div>
       </fluent-listbox>
-      <div id="excel-file"></div>
     </div>
     <div id="container">
       <canvas id="viewport"></canvas>
